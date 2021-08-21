@@ -32,11 +32,8 @@ class Q3 {
         for( i in query.indices) {
             val temp = query[i].split(regex)
             val scoreList = getScoreList(temp)
-            println(scoreList)
             val idx = binarySearch(scoreList, temp[4].toInt())
-            println(temp[4].toInt())
             answer[i] = scoreList.size - idx
-            println(answer[i])
         }
         return answer
     }
