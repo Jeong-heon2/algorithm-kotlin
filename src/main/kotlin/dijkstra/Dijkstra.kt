@@ -10,8 +10,8 @@ import java.util.*
 fun main() = with(BufferedReader(InputStreamReader(System.`in`))) {
     // e: 간선의 목적지, w: 간선의 가중치
     class Edge(val e: Int, val w: Int) : Comparable<Edge>{
-        override fun compareTo(edge : Edge): Int{
-            return this.w - edge.w
+        override fun compareTo(other : Edge): Int{
+            return this.w - other.w
         }
     }
 
