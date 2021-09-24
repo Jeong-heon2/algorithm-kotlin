@@ -75,7 +75,7 @@ class Q5 {
                 }
             }
 
-
+            return true
 
         }
         class Node(
