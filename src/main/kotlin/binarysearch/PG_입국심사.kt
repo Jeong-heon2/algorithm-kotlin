@@ -1,16 +1,15 @@
 package binarysearch
 
-import java.util.*;
-
 class PG_입국심사 {
     fun solution(n: Int, times: IntArray): Long {
         return binarySearch(n, times)
     }
 
     private fun binarySearch(n: Int, times: IntArray): Long {
-        Arrays.sort(times);
+        val maxTime = times.maxOrNull() ?: return 0L
+
         var left = 0L
-        var right = times[times.lastIndex].toLong() * (n / times.size + 1)
+        var right = maxTime.toLong() * (n / times.size + 1)
         var answer = Long.MAX_VALUE
         while (left <= right) {
             val mid = (left + right) / 2
