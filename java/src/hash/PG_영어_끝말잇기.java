@@ -5,6 +5,7 @@ public class PG_영어_끝말잇기 {
 
     class Solution {
         public int[] solution(int n, String[] words) {
+            ArrayList<Integer> list = new ArrayList<>();
             HashSet<String> set = new HashSet<>();
             set.add(words[0]);
             int round = 1;
