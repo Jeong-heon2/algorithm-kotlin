@@ -4,11 +4,28 @@ import netscape.javascript.JSObject
 import java.util.*
 
 fun main() {
-    //val mutableList : MutableList<Int> = mutableListOf<Int>(1) as MutableList<Number>
+    var cv = Covariance<A>()
+    val a = "심은석"
+    val b = "심은석"
+    if (a===b) println("yes")
 
 }
-fun combination(arr: Array<Int>, visited: BooleanArray, start: Int, n: Int, r: Int) {
-    val dec = ArrayDeque<Array<Int>>()
+open class A : G(){
+    fun d() {
+        a
+    }
 }
-class Covariance {
+
+class F : A() {
+    fun c() {
+        a
+    }
+}
+
+open class G {
+    protected val a  = 1
+}
+
+class Covariance<T : A> (){
+
 }
