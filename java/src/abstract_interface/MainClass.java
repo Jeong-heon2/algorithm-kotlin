@@ -1,9 +1,20 @@
 package abstract_interface;
 
-public class MainClass {
-    public static void main(String[] args) {
-        ClassTwo c2 = new ClassTwo(new ClassOne());
+import java.math.BigDecimal;
 
-        System.out.println(c2.abstOne.count);
+public class MainClass {
+    static int c;
+    public static void main(String[] args) {
+        int result = 2 / 0;
+        System.out.println(result);
     }
+}
+
+class Outer {
+    static class Inner {
+        
+    }
+}
+class Other {
+    Outer.Inner oi = new Outer.Inner();
 }
