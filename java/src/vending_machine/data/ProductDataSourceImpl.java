@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+// todo: 종류를 추가/제거 하고 싶다면?
 public class ProductDataSourceImpl implements ProductDataSource{
 
     HashMap<String, ProductInfo> products = new HashMap<>();
@@ -49,6 +50,17 @@ public class ProductDataSourceImpl implements ProductDataSource{
     }
 
     @Override
+    public Result<ProductInfo> newProduct(String name, int price, int count, boolean adult) {
+        if (products.containsKey(name)) {
+            return Result.failure(new AlreadyExistedProductException());
+        } else {
+            ProductInfo newProduct = new ProductInfo(name, price, count, adult);
+            products.put(name, new ProductInfo(name, price, count, adult));
+            return Result.success(newProduct);
+        }
+    }
+
+    @Override
     public Result<List<ProductInfo>> getProductInfoList() {
         return Result.success(new ArrayList<>(products.values()));
     }
@@ -64,9 +76,9 @@ public class ProductDataSourceImpl implements ProductDataSource{
     }
 
     public static class NonExistenceProductException extends Exception {
-
     }
     public static class OutOfProductsException extends Exception {
-
+    }
+    public static class AlreadyExistedProductException extends Exception {
     }
 }

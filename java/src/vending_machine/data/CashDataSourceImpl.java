@@ -2,15 +2,16 @@ package vending_machine.data;
 
 import vending_machine.domain.Result;
 
-public class MoneyDataSourceImpl implements MoneyDataSource {
+// todo: 카드를 받는다?  돈이아닌 토큰을 받는다?
+public class CashDataSourceImpl implements CashDataSource {
 
     private int money;
 
-    private MoneyDataSourceImpl() {
+    private CashDataSourceImpl() {
         this.money = 0;
     }
 
-    public static MoneyDataSourceImpl getInstance() {
+    public static CashDataSourceImpl getInstance() {
         return LazyHolder.INSTANCE;
     }
 
@@ -21,6 +22,6 @@ public class MoneyDataSourceImpl implements MoneyDataSource {
     }
 
     static class LazyHolder {
-        private static final MoneyDataSourceImpl INSTANCE = new MoneyDataSourceImpl();
+        private static final CashDataSourceImpl INSTANCE = new CashDataSourceImpl();
     }
 }

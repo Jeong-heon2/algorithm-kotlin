@@ -1,23 +1,28 @@
 package vending_machine.presentation;
 
-import vending_machine.data.MoneyDataSource;
 import vending_machine.data.ProductDataSource;
 import vending_machine.data.ProductDataSourceImpl;
+import vending_machine.data.pay.Cash;
+import vending_machine.data.pay.Currency;
+import vending_machine.data.pay.PayManager;
 import vending_machine.domain.ProductInfo;
 import vending_machine.domain.Result;
 
 import java.util.List;
 
+// todo: 신원확인이 필요하다면?
+// todo: 돈을 받아서 제작해서 줘야한다면?  커피 자판기  이런거를 지원할 수 있으려면
+// 이 구조에서 크게 바뀌지 않고  추가하거나 조금만 바꿔서 저 기능들을 지원하도록. 
 public class Controller {
 
     private final DashBoard dashBoard;
     private final ProductDataSource productDataSource;
-    private final MoneyDataSource moneyDataSource;
+    private final PayManager payManager;
 
-    public Controller(DashBoard dashBoard, ProductDataSource productDataSource, MoneyDataSource moneyDataSource) {
+    public Controller(DashBoard dashBoard, ProductDataSource productDataSource, PayManager payManager) {
         this.dashBoard = dashBoard;
         this.productDataSource = productDataSource;
-        this.moneyDataSource = moneyDataSource;
+        this.payManager = payManager;
     }
 
     public void printProducts() {
@@ -27,7 +32,7 @@ public class Controller {
         }
     }
 
-    public void buyProduct(String name, int count, int pay) {
+    public void buyProduct(String name, int count, Currency currency) {
         Result<ProductInfo> productRes = productDataSource.getProductInfo(name);
         if (productRes.isSuccess()) {
             ProductInfo productInfo = productRes.getOrNull();
@@ -35,12 +40,15 @@ public class Controller {
                 if (count > productInfo.count) {
                     dashBoard.printMsg("재고 부족.");
                 } else {
-                    int total = count * productInfo.price;
-                    if (total > pay) dashBoard.printMsg("돈이 모자랍니다. ");
-                    else {
+                    adultCheck(productInfo);
+                    Result<? extends Currency> res = payManager.pay(currency, new ProductInfo(name, productInfo.price, count));
+                    if (res.isSuccess()) {
                         productDataSource.popProduct(name, count);
-                        moneyDataSource.add(total);
-                        dashBoard.printMsg("거스름돈 : " + (pay - total));
+                        if (res.getOrNull() instanceof Cash) {
+                            dashBoard.printMsg("거스름돈 : " + ((Cash) res.getOrNull()).getValue());
+                        }
+                    } else {
+                        dashBoard.printMsg(res.exceptionOrNull().getMessage());
                     }
                 }
             }
@@ -51,5 +59,16 @@ public class Controller {
                 dashBoard.printMsg("알 수 없는 에러");
             }
         }
+    }
+
+    public void newProduct(String name, int price, int count, boolean adult) {
+        productDataSource.newProduct(name, price, count, adult);
+    }
+
+    private boolean adultCheck(ProductInfo productInfo) {
+        if (productInfo.adult) {
+            System.out.println("--- 신원 확인 ---");
+        }
+        return true;
     }
 }

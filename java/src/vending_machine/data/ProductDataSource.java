@@ -10,6 +10,7 @@ public interface ProductDataSource {
     // Result<남은 개수>
     public Result<Integer> popProduct(String name, int count);
     public Result<Integer> pushProduct(String name, int count);
+    public Result<ProductInfo> newProduct(String name, int price, int count, boolean adult);
 
     public Result<List<ProductInfo>> getProductInfoList();
     public Result<ProductInfo> getProductInfo(String name);
