@@ -65,6 +65,8 @@ public class Controller {
         productDataSource.newProduct(name, price, count, adult);
     }
 
+    // Product 에 adult 는 나쁘지 않은데  ,  멤버십인지 아닌지 운영시간인지 아닌지 여러 조건일 수 있다는 가정. 판매할 수 있는 상태인지를 체크 하는 거로 확장
+    // 여러 조건이니까 상태 값 하나로 는 불가능. pay 설계 개념을 여기에 도입할 수 있다.
     private boolean adultCheck(ProductInfo productInfo) {
         if (productInfo.adult) {
             System.out.println("--- 신원 확인 ---");
