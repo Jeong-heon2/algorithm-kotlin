@@ -73,7 +73,9 @@ public class Input {
         DashBoard dashBoard = new DashBoard();
         CashEngine cashEngine = new CashEngine(moneyDataSource);
         CardEngine cardEngine = new CardEngine();
-        PayManager payManager = new PayManager(cashEngine, cardEngine);
+        PayManager payManager = new PayManager();
+        payManager.addEngine(cardEngine);
+        payManager.addEngine(cashEngine);
         controller = new Controller(dashBoard, productDataSource, payManager);
     }
 }

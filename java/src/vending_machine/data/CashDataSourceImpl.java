@@ -2,7 +2,6 @@ package vending_machine.data;
 
 import vending_machine.domain.Result;
 
-// todo: 카드를 받는다?  돈이아닌 토큰을 받는다?
 public class CashDataSourceImpl implements CashDataSource {
 
     private int money;
