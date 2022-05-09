@@ -5,10 +5,12 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class Pizza {
+    String packagePrivate = "d";
+    protected String protectedName = "f";
     public enum Topping { HAM, ONION }
     final Set<Topping> toppings;
 
-    abstract static class Builder<T extends Builder<T>> {
+    protected abstract static class Builder<T extends Builder<T>> {
         EnumSet<Topping> toppings = EnumSet.noneOf(Topping.class);
         public T addTopping(Topping topping) {
             toppings.add(Objects.requireNonNull(topping));
@@ -18,7 +20,7 @@ public abstract class Pizza {
         protected abstract T self();
     }
 
-    Pizza(Builder<?> builder) {
+    public Pizza(Builder<?> builder) {
         toppings = builder.toppings.clone();
     }
 }
