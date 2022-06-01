@@ -1,52 +1,32 @@
 package playground.nested;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.UnaryOperator;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 
 public class TestMani {
-    static int staticField = 1;
-    int nonStaticField = 2;
-    public static <E> void swap(List<E> list, int i , int j) {
-        list.set(i, list.set(j, list.get(i)));
-    }
-    public static void main(String[] args) {
-        List<Integer> a = new ArrayList<>();
-        a.add(1);
-        a.add(2);
-        swap(a, 0, 1);
-        Anonymous anonymous = new Anonymous() {
-            int a = 1;
-            //static int b = 2; static field 안 됨
-            @Override
-            public void func() {
-                //...
-                a = 2;
-                staticField = 2;
-            }
-        };
 
-        StaticNestedAnonymous staticNestedAnonymous = new StaticNestedAnonymous() {
-            @Override
-            public void func1() {
-                //;;;
-                staticField = 3;
-            }
-        };
+    public static void main(String args[]){
+        ExecutorService exec = Executors.newCachedThreadPool();
+        exec.submit((Runnable) System.out::println);
     }
 
-    public static void staticMethod() {
-        StaticNestedAnonymous staticNestedAnonymous = new StaticNestedAnonymous() {
-            @Override
-            public void func1() {
-                //;;;
-                staticField = 3;
-                //nonStaticField = 2; // 정적 문맥에서는 사용할 수 없다.
-            }
-        };
+
+
+    public static <E> Iterable<E> iterableOf(Stream<E> stream) {
+        return stream::iterator;
     }
 
-    static abstract class StaticNestedAnonymous {
-        public abstract void func1();
+    static Stream<BigInteger> primes() {
+        return Stream.iterate(BigInteger.TWO, BigInteger::nextProbablePrime);
     }
 }

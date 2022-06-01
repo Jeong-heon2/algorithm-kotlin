@@ -1,32 +1,44 @@
 package playground
 
+import java.beans.PropertyChangeListener
+import java.beans.PropertyChangeSupport
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.lang.StringBuilder
+import java.lang.invoke.StringConcatFactory
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
+class Test {
 
-var ans = 0L
-fun main(args: Array<String>) = with(BufferedReader(InputStreamReader(System.`in`))){
-    val (N, K) = readLine().split(" ").map { it.toInt() }
-    val arr = IntArray(N) { it }
-    val visited = BooleanArray(N)
-    combination(arr, visited, 0, N, K)
-    println(ans % 1000000007L)
+    constructor() {
+        println("d")
+    }
+    init {
+        println("df")
+    }
 }
+fun main(args: Array<String>)  {
 
-fun combination(arr: IntArray, visited: BooleanArray, start: Int, n: Int, r: Int) {
-    if (r == 0) {
-        for (i in 0 until n) {
-            var sum = 0
-            if (visited[i]) {
-                sum += arr[i]
-            }
-            if (sum % n == 0) ans++
-        }
-    } else {
-        for (i in start until n) {
-            visited[i] = true
-            combination(arr, visited, i + 1, n, r - 1)
-            visited[i] = false
+    data class Person(val name: String, val age: Int)
+
+    fun nameStartWithC(person: Person) = person.name.startsWith("C")
+    fun lengthOfNameGraterThan3(person: Person) = person.name.length > 3
+    fun ageGraterThan10(person: Person) = person.age > 10
+
+    val persons = listOf(
+        Person("Choe Jaeho", 13),
+        Person("Micheal Jackson", 3),
+        Person("Nice One Sonny", 29),
+        Person("Jaws bar", 9)
+    )
+
+    val list = mutableListOf<Person>()
+    for (person in persons) {
+        if (nameStartWithC(person) && lengthOfNameGraterThan3(person) && ageGraterThan10(person)) {
+            list.add(person)
         }
     }
 }
