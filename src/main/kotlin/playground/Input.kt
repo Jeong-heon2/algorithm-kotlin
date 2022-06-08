@@ -42,3 +42,33 @@ fun main(args: Array<String>)  {
         }
     }
 }
+
+/*
+N개의 원소로 이뤄진 수열 A가 있을때.
+구간의 연속된 원소들의 합이 S 이상인 구간중 길이가 가장짧은 구간의 길이를 구하세요
+10 15
+5 1 3 5 10 7 4 9 2 8
+
+ */
+fun solve(arr: IntArray, s: Int): Int {
+    if (arr.isEmpty()) return 0
+    if (arr.first() >= s) return 1
+
+    var i = 0
+    var j = 1
+    var sum = arr[i]
+    var ans = Int.MAX_VALUE
+    while (i <= j) {
+        while (j < arr.size && sum < s) {
+            sum += arr[j++]
+        }
+        if (sum >= s) {
+            ans = ans.coerceAtMost(j - i + 1)
+        }
+
+        sum -= arr[i++];
+    }
+    return ans
+}
+// 1, 2 3, 4 5
+//
