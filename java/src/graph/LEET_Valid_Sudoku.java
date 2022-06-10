@@ -7,15 +7,15 @@ public class LEET_Valid_Sudoku {
         Solution s = new Solution();
         if (s.isValidSudoku(new String[][]
                 {
-                        {"8", "3", ".", ".", "7", ".", ".", ".", "."},
-                        {"6", ".", ".", "1", "9", "5", ".", ".", "."},
-                        {".", "9", "8", ".", ".", ".", ".", "6", "."},
-                        {"8", ".", ".", ".", "6", ".", ".", ".", "3"},
-                        {"4", ".", ".", "8", ".", "3", ".", ".", "1"},
-                        {"7", ".", ".", ".", "2", ".", ".", ".", "6"},
-                        {".", "6", ".", ".", ".", ".", "2", "8", "."},
-                        {".", ".", ".", "4", "1", "9", ".", ".", "5"},
-                        {".", ".", ".", ".", "8", ".", ".", "7", "9"}
+                        {".", ".", ".", ".", "7", ".", ".", ".", "."},
+                        {".", ".", ".", ".", ".", ".", ".", ".", "."},
+                        {".", ".", ".", ".", ".", ".", ".", "6", "."},
+                        {".", ".", ".", ".", ".", ".", ".", ".", "."},
+                        {"4", ".", ".", ".", ".", ".", ".", ".", "."},
+                        {".", ".", ".", ".", ".", ".", ".", ".", "."},
+                        {".", "6", ".", ".", ".", ".", ".", ".", "."},
+                        {".", ".", ".", ".", ".", ".", ".", ".", "."},
+                        {".", ".", ".", ".", ".", ".", ".", ".", "."}
                 }
         )) {
             System.out.println("true");
@@ -65,22 +65,25 @@ public class LEET_Valid_Sudoku {
         }
 
         private boolean bruteForce(char[][] board, int y, int x) {
-            int[] next = findNextPos(board);
-            if (next[0] == -1) return false;
 
             int n = ((y/3)*3) + (x/3);
             visited[y][x] = true;
             for (int i = 1; i <= 9; i++) {
-                if ((map[0][y] & i) == 0 && (map[1][x] & i) == 0 && (map[2][n] & i) == 0) {
+                if ((map[0][y] & (1 << i)) == 0 && (map[1][x] & (1 << i)) == 0 && (map[2][n] & (1 << i)) == 0) {
                     board[y][x] = (char) (i + '0');
                     int mask = 1 << i;
                     map[0][y] |= mask;
                     map[1][x] |= mask;
                     map[2][n] |= mask;
                     cnt++;
-                    if (cnt == sum) return true;
+
+                    if (cnt == sum) {
+                        return true;
+                    }
 
 
+                    int[] next = findNextPos(board);
+                    if (next[0] == -1) return false;
                     boolean res = bruteForce(board, next[0], next[1]);
                     if (res) return true;
 
@@ -91,6 +94,7 @@ public class LEET_Valid_Sudoku {
                     cnt--;
                 }
             }
+            visited[y][x] = false;
             return false;
         }
 
