@@ -1,14 +1,20 @@
 package playground
 
 fun main() {
-    val s = "101010111"
-    val res = s.groupBy { if(it == '0') 0 else 1 }.mapValues { it.value.size }
-    res[0]
-    var a = 0
-    var b = 0
-    val (c, d) = func()
+    inlineHello("김영희") {
+        println(it)
+    }
 }
 
-fun func(): List<Int> {
-    return listOf(1, 2)
+private inline fun <T> inlineHello(name: T, crossinline func: (String) -> Unit) {
+    /**
+     * 다른 고차함수에서 func를 호출시엔 crossinline 을 표시해주어야 함.
+     */
+    invokeFunc() {
+        func("$name 반가워~^^")
+    }
+}
+
+private fun invokeFunc(func: () -> Unit) {
+    func.invoke()
 }

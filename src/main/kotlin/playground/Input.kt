@@ -12,7 +12,6 @@ import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
 class Test {
-
     constructor() {
         println("d")
     }
@@ -22,53 +21,42 @@ class Test {
 }
 fun main(args: Array<String>)  {
 
-    data class Person(val name: String, val age: Int)
+    val primes = sequence {
+        var numbers: Sequence<Int> = generateSequence(2) { it + 1 }
 
-    fun nameStartWithC(person: Person) = person.name.startsWith("C")
-    fun lengthOfNameGraterThan3(person: Person) = person.name.length > 3
-    fun ageGraterThan10(person: Person) = person.age > 10
-
-    val persons = listOf(
-        Person("Choe Jaeho", 13),
-        Person("Micheal Jackson", 3),
-        Person("Nice One Sonny", 29),
-        Person("Jaws bar", 9)
-    )
-
-    val list = mutableListOf<Person>()
-    for (person in persons) {
-        if (nameStartWithC(person) && lengthOfNameGraterThan3(person) && ageGraterThan10(person)) {
-            list.add(person)
+        while(true) {
+            val prime = numbers.first()
+            yield(prime)
+            println("prime : $prime =========")
+            numbers = numbers.drop(1).filter {
+                println(it)
+                it % prime != 0
+            }
         }
     }
+    primes.take(5).toList()
 }
 
-/*
-N개의 원소로 이뤄진 수열 A가 있을때.
-구간의 연속된 원소들의 합이 S 이상인 구간중 길이가 가장짧은 구간의 길이를 구하세요
-10 15
-5 1 3 5 10 7 4 9 2 8
+data class Person(val name: String, val age: Int)
 
- */
-fun solve(arr: IntArray, s: Int): Int {
-    if (arr.isEmpty()) return 0
-    if (arr.first() >= s) return 1
+fun nameStartWithC(person: Person): Boolean = person.name.startsWith("C")
+fun lengthOfNameGraterThan3(person: Person) = person.name.length > 3
+fun ageGraterThan10(person: Person) = person.age > 10
 
-    var i = 0
-    var j = 1
-    var sum = arr[i]
-    var ans = Int.MAX_VALUE
-    while (i <= j) {
-        while (j < arr.size && sum < s) {
-            sum += arr[j++]
-        }
-        if (sum >= s) {
-            ans = ans.coerceAtMost(j - i + 1)
-        }
+val persons = listOf(
+    Person("Choe Jaeho", 13),
+    Person("Micheal Jackson", 3),
+    Person("Nice One Sonny", 29),
+    Person("Jaws bar", 9)
+)
 
-        sum -= arr[i++];
-    }
-    return ans
+fun isOdd(x:Int):Boolean{
+    return x % 2 != 0
 }
-// 1, 2 3, 4 5
-//
+
+fun solve() {
+    persons.filter(::nameStartWithC.and(::lengthOfNameGraterThan3).and(::ageGraterThan10))
+}
+inline infix fun <P> ((P) -> Boolean).and(crossinline predicate: (P) -> Boolean): (P) -> Boolean {
+    return{p: P->this(p) && predicate(p)}
+}
