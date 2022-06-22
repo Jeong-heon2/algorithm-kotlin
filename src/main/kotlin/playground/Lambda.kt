@@ -3,7 +3,7 @@ package playground
 import org.jetbrains.annotations.NotNull
 
 
-class View {
+open class View {
     lateinit var clickListener: ClickListener
     lateinit var onClicked: (View) -> Unit
     fun setOnClickListener(@NotNull clickListener: ClickListener) {
@@ -11,18 +11,29 @@ class View {
         this.clickListener = clickListener
     }
 
-    fun setOnClickListener(onClicked: (View) -> Unit) {
-        println("onClick")
-        this.onClicked = onClicked
+    fun performClick() {
+        this.clickListener.onClick(this)
     }
 
     fun interface ClickListener {
         fun onClick(view: View)
     }
 }
-fun main() {
-    val view = View()
-    view.setOnClickListener (View.ClickListener {
 
-    })
+fun main() {
+    val activity = Activity()
+    activity.start()
+    activity.view.performClick()
+    activity.cnt++
+    activity.view.performClick()
+}
+
+class Activity {
+    var cnt = 0
+    val view = View()
+    fun start() {
+        view.setOnClickListener {
+            println(cnt)
+        }
+    }
 }

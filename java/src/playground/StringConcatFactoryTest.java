@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 import java.util.spi.ToolProvider;
 
-public class Test {
+public class StringConcatFactoryTest {
 
     public static void main(String[] args) throws Throwable {
         String time = "";
@@ -59,6 +59,6 @@ public class Test {
     private static void showBytecode() {
         System.out.println();
         ToolProvider.findFirst("javap")
-                .ifPresent(tp -> tp.run(System.out, System.err, "-v", "-c", Test.class.getName()));
+                .ifPresent(tp -> tp.run(System.out, System.err, "-v", "-c", StringConcatFactoryTest.class.getName()));
     }
 }

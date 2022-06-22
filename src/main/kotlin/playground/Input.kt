@@ -55,7 +55,7 @@ fun isOdd(x:Int):Boolean{
 }
 
 fun solve() {
-    persons.filter(::nameStartWithC.and(::lengthOfNameGraterThan3).and(::ageGraterThan10))
+    persons.filter(::nameStartWithC and  ::lengthOfNameGraterThan3 and ::ageGraterThan10)
 }
 inline infix fun <P> ((P) -> Boolean).and(crossinline predicate: (P) -> Boolean): (P) -> Boolean {
     return{p: P->this(p) && predicate(p)}
